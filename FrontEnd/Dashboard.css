@@ -3,29 +3,179 @@
 *{
     box-sizing: border-box;
 }
+/* page background */
+body{
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    background: linear-gradient(180deg, #4687c4 0%, #4d657a 50%, #192c3d 100%);
+    color: #07203ab9;
+}
 
+/* main container slightly darker gradient */
+.main_div{
+    margin: 20px auto;
+    max-width: 1100px;
+    background: linear-gradient(180deg, rgba(8,78,156,0.08) 0%, rgba(8,78,156,0.04) 100%);
+    padding: 18px 22px;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(2, 26, 57, 0.08);
+}
+
+/* header layout */
+header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+    padding: 6px 2px;
+}
+
+.brand{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Photoshop-like square logo */
+.logo_maybe{
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(180deg,#002a6b,#013a8a);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 20px;
+    border-radius: 6px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+}
+
+.brand .description{
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #07203a;
+    line-height: 1;
+}
+
+.brand .more_description{
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: rgba(7,32,58,0.6);
+    line-height: 1;
+}
+
+/* nav styling */
 nav ul{
-    list-style-type:none;
-    background-color: rgb(0, 49, 185);
+    list-style: none;
     padding: 0;
     margin: 0;
-    overflow: hidden;
+    display: flex;
+    gap: 8px;
+    align-items: center;
 }
+
+/* no per-li rules needed (nav uses flex) */
 
 nav a{
     text-decoration: none;
-    color: antiquewhite;
-    padding: 15px;
-    text-align: center;
-    display: inline-block; 
+    color: #ffffff;
+    background: rgba(0,49,185,0.95);
+    padding: 8px 14px;
+    border-radius: 6px;
+    display: inline-block;
+    transition: background-color 200ms ease, transform 120ms ease;
 }
 
 nav a:hover{
-    background-color: rgba(255, 242, 242, 0.774);
-    color: rgb(192, 21, 21);
-    transition: 1s;
+    background-color: #ffffff;
+    color: #002a6b;
+    transform: translateY(-2px);
 }
 
-nav li{
-    float: left;/* akaenda pale kwa ul akaeka overflow hidden find out why*/
+/* small helpers for the rest of the page */
+table{
+    background: rgba(255, 255, 255, 0.548);
+    border-collapse: collapse;
+    width:100%;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+caption{font-weight:600; margin-bottom:8px;}
+
+/* table visual polish */
+th, td{
+    border: 1px solid #e6eef8a8;
+    padding: 10px 8px;
+    text-align: center;
+    font-size: 0.95rem;
+}
+
+th{
+    background: linear-gradient(180deg,#f4f9ff9d,#eef6ffa9);
+    font-weight:700;
+    color: #03263f;
+}
+
+tr:nth-child(even) td{background: #fbfdffa2;}
+tr td{vertical-align: middle;}
+
+/* ensure adm no can wrap if long */
+td:nth-child(2){
+    white-space: normal;
+    max-width: 220px;
+    word-break: break-word;
+}
+
+/* main table container and layout */
+.main_table{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: calc(100vh - 220px); /* leaves room for header + footer */
+}
+
+.last_updated{
+    align-self: flex-end;
+    font-style: italic;
+    color: rgba(7,32,58,0.75);
+}
+
+.info-btn{
+    display: inline-block;
+    padding: 8px 10px;
+    background: rgba(8, 167, 61, 0.658);
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+.info-btn:hover{background:#fff;color:#002a6b;}
+
+/* pagination follows header styles */
+.pagination{
+    display:flex;
+    gap:8px;
+    align-items:center;
+    justify-content:center;
+    padding: 12px 0;
+}
+
+.pagination a{
+    text-decoration:none;
+    padding:8px 12px;
+    border-radius:6px;
+    background: rgba(0,49,185,0.95);
+    color:#fff;
+}
+
+.pagination a:hover{background:#fff;color:#002a6b;}
+
+/* footer styling */
+footer{
+    text-align:center;
+    padding:12px 0;
+    color: rgba(7,32,58,0.7);
+    margin-top: 14px;
 }

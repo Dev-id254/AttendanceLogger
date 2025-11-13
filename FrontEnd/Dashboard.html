@@ -2,32 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="veiwport" content="width=device-width,initial-scale=1" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta name="description" content="An interactive UI for the student logger." />
   <!--Change the decription of this description :) -->
 
 <title>CCT Project: Students' Attendance Logger</title>
 
 <!--Link to the stylesheet-->
+    <link rel="stylesheet" href="Dashboard.css">
 
 </head>
 
 <body>
 
   <div class="main_div">
-    
+
     <header>
       <div class="brand">
-        <div class="logo_maybe">AScan</div>
+        <div class="logo_maybe">AS</div>
         <div class="description">Content Here</div>
-        <div class="more_dectrpition">more content</div>
+        <div class="more_description">more content</div>
       </div>
       <nav>
         <ul>
-        <li><a href="Dashboard.html">S1</a></li>
-        <li><a href="Dashboard.html">S1</a></li>
-        <li><a href="Dashboard.html">S1</a>
-        </li>
+          <li><a href="Dashboard.html">S1</a></li>
+          <li><a href="Dashboard.html">S2</a></li>
+          <li><a href="Dashboard.html">S3</a></li>
         </ul>
       </nav>
 
@@ -35,86 +35,100 @@
 
 <main>
       <section class="main_table">
-      <div class="last_updated">
-        <p>Date & Time</p>
-      </div>
-      <div class="table">
-        <table>
-          <caption>Attendance Log.</caption>
-          <tr class="table_info">
-            <th>Index</th>
-            <th>Adm No</th>
-            <th>Wk1</th>
-            <th>Wk2</th>
-            <th>Wk3</th>
-            <th>Wk4</th>
-            <th>Wk5</th>
-            <th>Wk6</th>
-            <th>Wk7</th>
-          </tr>
+        <div class="last_updated">
+          <p>Last updated: <span id="lastTime">Date & Time</span></p>
+        </div>
+        <div class="table">
+          <table>
+            <caption>Attendance Log.</caption>
+            <tr class="table_info">
+              <th>Index</th>
+              <th>Adm No</th>
+              <th>Wk1</th>
+              <th>Wk2</th>
+              <th>Wk3</th>
+              <th>Wk4</th>
+              <th>Wk5</th>
+              <th>Wk6</th>
+              <th>Wk7</th>
+              <th>Wk8</th>
+              <th>Wk9</th>
+              <th>Wk10</th>
+              <th>Wk11</th>
+              <th>Wk12</th>
+              <th>Info</th>
+            </tr>
 
-          <tr>
-            <td>1</td>
-            <td>CCT/00000/000</td>
-            <td>A</td>
-            <td>A</td>
-            <td>B</td>
-            <td>A</td>
-            <td>A</td>
-            <td>B</td>
-            <td>A</td>
-          </tr>
+            <!-- Student 1 (rowspan used for index & adm no to allow taller adm strings) -->
+            <tr>
+              <td rowspan="3">1</td>
+              <td rowspan="3">CCT/00000/000</td>
+              <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+              <td rowspan="3"><a class="info-btn" href="student.html">Info</a></td>
+            </tr>
+            <tr>
+              <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
+            <tr>
+              <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
 
-          <tr>
-            <td>2</td>
-            <td>CCT/00001/000</td>
-            <td>B</td>
-            <td>A</td>
-            <td>A</td>
-            <td>A</td>
-            <td>A</td>
-            <td>A</td>
-            <td>A</td>
-          </tr>
+            <!-- Student 2 -->
+            <tr>
+              <td rowspan="3">2</td>
+              <td rowspan="3">CCT/00001/000</td>
+              <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+              <td rowspan="3"><a class="info-btn" href="student.html">Info</a></td>
+            </tr>
+            <tr>
+              <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
+            <tr>
+              <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
 
-          <tr>
-            <td>3</td>
-            <td>CCT/00002/000</td>
-            <td>A</td>
-            <td>A</td>
-            <td>A</td>
-            <td>A</td>
-            <td>A</td>
-            <td>A</td>
-            <td>A</td>
-          </tr>
+            <!-- Student 3 -->
+            <tr>
+              <td rowspan="3">3</td>
+              <td rowspan="3">CCT/00002/000</td>
+              <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+              <td rowspan="3"><a class="info-btn" href="student.html">Info</a></td>
+            </tr>
+            <tr>
+              <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
+            <tr>
+              <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
 
-          <tr>
-            <td>4</td>
-            <td>CCT/00003/000</td>
-            <td>A</td>
-            <td>B</td>
-            <td>B</td>
-            <td>A</td>
-            <td>B</td>
-            <td>B</td>
-            <td>A</td>
-          </tr>
+            <!-- Student 4 -->
+            <tr>
+              <td rowspan="3">4</td>
+              <td rowspan="3">CCT/00003/000</td>
+              <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+              <td rowspan="3"><a class="info-btn" href="student.html">Info</a></td>
+            </tr>
+            <tr>
+              <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
+            <tr>
+              <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
 
-        </table>
-      </div>
-      <div class="pagination">
-        <a href="Dashboard.html">[</a> 
-        <a href="Dashboard.html" class="...">1</a>
-        <a href="Dashboard.html">2</a>
-        <a href="Dashboard.html">3</a>
-        <a href="Dashboard.html">4</a>
-        <a href="Dashboard.html">5</a>
-        <a href="Dashboard.html">6</a>
-        <a href="Dashboard.html">></a>
-    </div>
-      </div>
-    </section>
+          </table>
+        </div>
+
+        <div class="pagination">
+          <a href="#" class="page-ctrl">&laquo;</a>
+          <a href="#" class="page">1</a>
+          <a href="#" class="page">2</a>
+          <a href="#" class="page">3</a>
+          <a href="#" class="page">4</a>
+          <a href="#" class="page">5</a>
+          <a href="#" class="page">6</a>
+          <a href="#" class="page-ctrl">&raquo;</a>
+        </div>
+      </section>
 </main>
 
 
