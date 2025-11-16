@@ -1,4 +1,4 @@
-Current methods in place used to log students' attendance & identit confirmation in most universities in Kenya are manual and full of potential errors. We intend to fix this.
+Current methods in place used to log students' attendance & identity confirmation in most universities in Kenya are manual and full of potential errors. We intend to fix this.
 
 We'll be leveraging the fact that students are issued ID cards with a barcode on them. The barcode translates to the student's admission number.
 
