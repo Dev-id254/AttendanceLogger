@@ -20,3 +20,4 @@ Backend/.env
 
 # context file
 project_context_prompt.md
+Chat.txt
