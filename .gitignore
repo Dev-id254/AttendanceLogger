@@ -1,1 +1,22 @@
 .hintrc
+
+# Node backend
+Backend/node_modules/
+Backend/attendance.db
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+dist/
+
+# Environment
+.env
+Backend/.env
+
+# context file
+project_context_prompt.md

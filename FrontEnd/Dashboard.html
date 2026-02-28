@@ -43,123 +43,17 @@
     <div class="table">
         <table>
             <caption>Attendance Log.</caption>
-            <tr class="table_info">
-              <th>Index</th>
-              <th>Adm No</th>
-              <th>Wk1</th>
-              <th>Wk2</th>
-              <th>Wk3</th>
-              <th>Wk4</th>
-              <th>Wk5</th>
-              <th>Wk6</th>
-              <th>Wk7</th>
-              <th>Wk8</th>
-              <th>Wk9</th>
-              <th>Wk10</th>
-              <th>Wk11</th>
-              <th>Wk12</th>
-              <th>Info</th>
-            </tr>
-
-            <!-- Student 1 (rowspan used for index & adm no to allow taller adm strings) -->
-            <tr>
-              <td rowspan="3">1</td>
-              <td rowspan="3">Student 1</td>
-              <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-              <td rowspan="3"><a class="info-btn" href="student.html">Info</a></td>
-              <tr></tr>
-              <tr></tr>
-            </tr>
-
-            <!-- Student 2 -->
-            <tr>
-              <td rowspan="3">2</td>
-              <td rowspan="3">Student 2</td>
-              <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-              <td rowspan="3"><a class="info-btn" href="student.html">Info</a></td>
-              <tr></tr>
-              <tr></tr>
-            </tr>
-              
-            <!-- Student 3 -->
-            <tr>
-              <td rowspan="3">3</td>
-              <td rowspan="3">Student 3</td>
-              <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-              <td rowspan="3"><a class="info-btn" href="student.html">Info</a></td>
-              <tr></tr>
-              <tr></tr>
-            </tr>
-
-            <!-- Student 4 -->
-            <tr>
-              <td rowspan="3">4</td>
-              <td rowspan="3">Student 4</td>
-              <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-              <td rowspan="3"><a class="info-btn" href="student.html">Info</a></td>
-            <tr></tr>
-            <tr></tr>
-            </tr>
-
-            <!-- Student 5 -->
-            <tr>
-              <td rowspan="3">5</td>
-              <td rowspan="3">Student 5</td>
-              <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-              <td rowspan="3"><a class="info-btn" href="student.html">Info</a></td>
-            <tr></tr>
-            <tr></tr>
-            </tr>
-
-            <!-- Student 6 -->
-            <tr>
-              <td rowspan="3">6</td>
-              <td rowspan="3">Student 6</td>
-              <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-              <td rowspan="3"><a class="info-btn" href="student.html">Info</a></td>
-            <tr></tr>
-            <tr></tr>
-            </tr>
-
-            <!-- Student 7 -->
-            <tr>
-              <td rowspan="3">7</td>
-              <td rowspan="3">Student 7</td>
-              <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-              <td rowspan="3"><a class="info-btn" href="student.html">Info</a></td>
-            <tr></tr>
-            <tr></tr>
-            </tr>
-
-            <!-- Student 8 -->
-            <tr>
-              <td rowspan="3">8</td>
-              <td rowspan="3">Student 8</td>
-              <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-              <td rowspan="3"><a class="info-btn" href="student.html">Info</a></td>
-            <tr></tr>
-            <tr></tr>
-            </tr>
-
-            <!-- Student 9 -->
-            <tr>
-              <td rowspan="3">9</td>
-              <td rowspan="3">Student 9</td>
-              <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-              <td rowspan="3"><a class="info-btn" href="student.html">Info</a></td>
-            <tr></tr>
-            <tr></tr>
-            </tr>
-
-            <!-- Student 10 -->
-            <tr>
-              <td rowspan="3">10</td>
-              <td rowspan="3">Student 10</td>
-              <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-              <td rowspan="3"><a class="info-btn" href="student.html">Info</a></td>
-            <tr></tr>
-            <tr></tr>
-            </tr>
+            <thead>
+                <tr class="table_info">
+                  <th>Index</th>
+                  <th>Adm No</th>
+                  <th>Timestamp</th>
+                  <th>Info</th>
+                </tr>
+            </thead>
+            <tbody id="attendance-body">
+                <tr><td colspan="4">Loading...</td></tr>
+            </tbody>
         </table>
     </div>
 
@@ -177,7 +71,7 @@
  </main>
 
     <footer>
-      © 2025 <u><em>CCT Y</u><sub>3</sub></em>
+      © 2026 <u><em>CCT Y</u><sub>3</sub></em>
     </footer>
   </div>
 
