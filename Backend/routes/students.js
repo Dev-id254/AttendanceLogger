@@ -10,18 +10,41 @@ router.get('/', (req, res) => {
   });
 });
 
+// get one student by student_id (for "Info" UI)
+router.get('/:student_id', (req, res) => {
+  const studentId = req.params.student_id;
+  const sql = `
+    SELECT
+      s.id,
+      s.student_id,
+      s.name,
+      s.course_id,
+      c.name AS course_name
+    FROM Students s
+    LEFT JOIN Courses c ON c.id = s.course_id
+    WHERE s.student_id = ?
+    LIMIT 1
+  `;
+  db.get(sql, [studentId], (err, row) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (!row) return res.status(404).json({ error: 'student_not_found' });
+    res.json(row);
+  });
+});
+
 // add a student (lec mode)
 router.post('/', (req, res) => {
   const { student_id, name, course_id } = req.body;
   if (!student_id || !name) {
     return res.status(400).json({ error: 'student_id and name required' });
   }
+  const normalizedCourseId = Number.isFinite(Number(course_id)) ? Number(course_id) : null;
   db.run(
     'INSERT OR IGNORE INTO Students (student_id, name, course_id) VALUES (?,?,?)',
-    [student_id, name, course_id || null],
+    [student_id, name, normalizedCourseId],
     function (err) {
       if (err) return res.status(500).json({ error: err.message });
-      res.json({ id: this.lastID });
+      res.status(201).json({ id: this.lastID });
     }
   );
 });

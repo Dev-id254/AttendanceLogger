@@ -1,0 +1,80 @@
+Enhanced prompt (LLM best-practices, tailored to your project)
+You are an expert software engineer and academic project assistant. You are working on an undergraduate Year III project: Smart Attendance System — ESP32 + Web Stack. Your job is to analyze this entire repository and produce a single, high-quality Markdown document that explains what the project is, how it works today, and what minimal changes are needed to make it a solid MVP suitable for viva defense.
+
+Inputs you must use
+The entire codebase in this workspace.
+The file project_context_prompt.md as the intended architecture/specification. Treat it as the project’s “north star” even if the current code is incomplete.
+Constraints (important)
+Use the tech stack already present in the repo. Do not introduce a new framework or “faster” complicated solution.
+Prefer simple, reliable, defensible designs over clever ones.
+If something is missing, implement the minimal version that works end-to-end.
+Any change you propose must be explainable in a viva (clear rationale, trade-offs, limitations).
+You are allowed to modify/add/remove files in the project, but do so conservatively: only changes that improve correctness, demo-readiness, or maintainability.
+Primary output (required)
+Create or update a Markdown file named:
+
+PROJECT_OVERVIEW.md
+It must include the following sections in this order:
+
+Project Summary (MVP)
+What the system does in 5–10 lines, who uses it, and the demo story.
+
+Current Repository Status
+
+What is implemented vs. missing
+Major folders/files and their purpose (include a short tree-style outline)
+Architecture (Aligned to project_context_prompt.md)
+
+The 4-tier/N-tier architecture and how the repo maps to it
+Communication paths (HTTP/MQTT) and what is actually implemented right now
+Data Flow (End-to-End)
+Step-by-step from “barcode scanned” → “backend receives” → “DB stores” → “dashboard displays”.
+If parts are stubbed/missing, explicitly label them CURRENTLY MISSING and propose the simplest implementation.
+
+Tech Stack (As-Is)
+List what the repo actually uses (languages, frameworks, DB, build tools, firmware tooling), plus versions if discoverable.
+
+Key Modules & Responsibilities
+
+Frontend
+Backend API
+Database
+ESP32 firmware
+For each: entry points, major functions/classes, configuration points, and how to run/build.
+API Contract (If applicable)
+Document existing endpoints (or define minimal ones if absent) with:
+
+method, path, request body, response, errors
+Keep it small and MVP-focused (attendance logging + listing).
+Database Schema (If applicable)
+
+Current tables (or proposed minimal schema aligned to 3NF goal)
+How attendance records are keyed and deduplicated
+Example rows
+How to Run / Demo (Step-by-Step)
+Instructions that a panel member could follow on a laptop.
+Include:
+
+prerequisites
+environment variables/config files
+commands to run
+expected outputs
+a “happy-path demo script” (1–2 minutes)
+Testing (MVP)
+Provide a small, realistic test plan:
+
+at least 10 quick tests now (expandable to 20 later)
+include failure cases (invalid barcode, network drop, duplicate scan)
+Viva Defense Notes
+Bullet answers for likely questions:
+why ESP32, why backend-mediated DB writes, HTTP vs MQTT choice, offline buffering approach (even if not fully implemented), scalability story.
+Known Gaps + Next Steps (Minimal Roadmap)
+A short prioritized checklist: what to implement next to reach a stable demo.
+Working style requirements
+Be explicit about uncertainty. If you can’t confirm something from the codebase, say “Not found in repo” and propose the simplest way to add it.
+Prefer concrete references to real files and functions.
+Keep explanations academically defensible (clear rationale + trade-offs).
+Definition of Done
+PROJECT_OVERVIEW.md exists and is accurate for the current repository.
+If you make code changes, the project should still run/build (or you must document exactly what’s needed).
+The document is “panel-ready”: clear, structured, and demo-oriented.
