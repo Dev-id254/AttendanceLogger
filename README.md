@@ -7,7 +7,7 @@ The MVP in this repository includes:
 - A **frontend** HTML/CSS/JavaScript dashboard (`FrontEnd/`) that displays attendance logs fetched from a backend API.
 - A **Node.js + Express** backend (`Backend/`) exposing simple REST endpoints (`/api/students`, `/api/attendance`). Data is stored in a lightweight SQLite database for ease of setup.
 - A **database schema** (`Database/schema.sql` and `seed.sql`) showing the normalized tables (Students, Courses, Attendance, etc.) and sample seed data for MySQL.
-- **ESP32 firmware** (`Firmware/attendance.ino`) with **Bluetooth and WiFi support** to receive attendance data from a mobile device instead of a physical scanner.
+- **ESP32 firmware** (`Firmware/attendance.ino`) with **Bluetooth and WiFi support** to receive attendance data from a mobile device instead of a physical scanner. **Written in Arduino C++** for easy development and flashing.
 
 ## Architecture Overview (Updated)
 
@@ -44,7 +44,7 @@ This MVP provides a foundation for implementing authentication, enhanced securit
    - The page will fetch attendance records from the API and display them.
 
 4. **ESP32 Firmware**:
-   - Open `Firmware/attendance.ino` in Arduino IDE or PlatformIO
+   - Open `Firmware/attendance.ino` in **Arduino IDE** or **PlatformIO** (VS Code extension)
    - Update configuration:
      - `ssid`: Your WiFi network name
      - `password`: Your WiFi password
@@ -67,14 +67,33 @@ This MVP provides a foundation for implementing authentication, enhanced securit
 
 ## Key Files
 
-| File                                 | Purpose                                      |
-| ------------------------------------ | -------------------------------------------- |
-| `Firmware/attendance.ino`            | ESP32 firmware with Bluetooth + WiFi support |
-| `Backend/server.js`                  | Express server with attendance API           |
-| `Backend/routes/attendance.js`       | POST endpoint for recording attendance       |
-| `FrontEnd/Dashboard.html/js/css`     | Real-time attendance dashboard               |
-| `Documentation/PHONE_SETUP_GUIDE.md` | **Setup instructions for phone integration** |
-| `Database/schema.sql`                | Database schema for production deployment    |
+| File                                 | Purpose                                                    |
+| ------------------------------------ | ---------------------------------------------------------- |
+| `Firmware/attendance.ino`            | ESP32 firmware (Arduino C++) with Bluetooth + WiFi support |
+| `Backend/server.js`                  | Express server with attendance API                         |
+| `Backend/routes/attendance.js`       | POST endpoint for recording attendance                     |
+| `FrontEnd/Dashboard.html/js/css`     | Real-time attendance dashboard                             |
+| `Documentation/PHONE_SETUP_GUIDE.md` | **Setup instructions for phone integration**               |
+| `Database/schema.sql`                | Database schema for production deployment                  |
+
+## Firmware Development Notes
+
+**Current Framework:** Arduino C++ (PlatformIO/Arduino IDE)
+
+The firmware is written in **Arduino C++** for simplicity and ease of development. Legacy ESP-IDF files (`CMakeLists.txt`, `build.sh`, `ESP_IDF_BUILD_GUIDE.md`, etc.) remain in the repository for reference but are not used for building the current firmware.
+
+**Why Arduino C++:**
+
+- ✅ Simple setup/loop architecture
+- ✅ Easy flashing with Arduino IDE
+- ✅ Familiar syntax for most developers
+- ✅ Good performance for this use case
+- ✅ Cross-platform development
+
+**Supported Boards:**
+
+- ESP32 Dev Module
+- ESP32-S3 Dev Module (same code, just select different board in IDE)
 
 ## Testing Quick Start
 

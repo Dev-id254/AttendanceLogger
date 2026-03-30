@@ -2,86 +2,69 @@
 
 ## Overview
 
-This folder contains the **ESP32/ESP32-S3 Attendance Logger firmware** written in **ESP-IDF C** (not Arduino C++).
+This folder contains the **ESP32/ESP32-S3 Attendance Logger firmware** written in **Arduino C++** (PlatformIO/Arduino IDE).
 
 **Supports:**
 
 - ✅ **ESP32** (classic)
 - ✅ **ESP32-S3** (newer variant)
 - ✅ Same code for both chips (no changes needed)
-
-**Features:**
-
-- Bluetooth Classic (SPP) for wireless barcode input
-- WiFi connectivity for HTTP POST to backend
-- FreeRTOS-based multitasking
-- Optimized memory usage (~285 KB / 512 KB)
-- Full ESP-IDF integration
+- ✅ Bluetooth Serial for wireless barcode input
+- ✅ WiFi connectivity for HTTP POST to backend
+- ✅ Simple setup/loop architecture
+- ✅ Optimized memory usage (~290 KB / 512 KB available = 55%)
 
 ---
 
 ## Quick Start
 
-### 1. Install ESP-IDF (One-time)
+### 1. Install Arduino IDE or PlatformIO
 
-**Windows (PowerShell as Administrator):**
+**Arduino IDE:**
 
-```powershell
-python -m pip install esp-idf
-```
+- Download Arduino IDE 2.0+
+- Install ESP32 board package (Tools → Board Manager → Search "ESP32")
 
-**Linux/macOS:**
+**PlatformIO (Recommended):**
 
-```bash
-git clone --recursive https://github.com/espressif/esp-idf.git ~/esp/esp-idf
-cd ~/esp/esp-idf
-./install.sh
-source export.sh
-```
+- Install VS Code
+- Install PlatformIO extension
+- Open this project folder
 
-### 2. Set up Environment
+### 2. Configure the Firmware
 
-**Windows (PowerShell):**
+Edit `attendance/attendance.ino` to set your WiFi and backend details:
 
-```powershell
-python -m idf
-# This sets up the environment automatically
-```
-
-**Linux/macOS:**
-
-```bash
-export IDF_PATH=~/esp/esp-idf
-source $IDF_PATH/export.sh
+```cpp
+const char* ssid = "YourNetwork";
+const char* password = "YourPassword";
+const char* backendUrl = "http://192.168.1.100:3000/api/attendance";
+const char* bluetoothName = "ESP32_Attendance";
 ```
 
 ### 3. Build & Flash
 
-**Windows:**
+**Arduino IDE:**
 
-```cmd
-cd Firmware
-build.bat esp32           # For ESP32
-REM or
-build.bat esp32s3         # For ESP32-S3
-REM Then flash:
-build.bat flash
-REM Monitor:
-build.bat monitor
-```
+- Open `attendance/attendance.ino`
+- Select board: ESP32 Dev Module or ESP32-S3 Dev Module
+- Set COM port
+- Click Upload
 
-**Linux/macOS:**
+**PlatformIO:**
 
 ```bash
-cd Firmware
-chmod +x build.sh
-./build.sh esp32          # For ESP32
-# or
-./build.sh esp32s3        # For ESP32-S3
-# Then flash:
-./build.sh flash
-# Monitor:
-./build.sh monitor
+pio run -t upload
+```
+
+### 4. Monitor Serial Output
+
+**Arduino IDE:** Tools → Serial Monitor (115200 baud)
+
+**PlatformIO:**
+
+```bash
+pio device monitor
 ```
 
 ---
@@ -91,111 +74,201 @@ chmod +x build.sh
 ```
 Firmware/
 ├── attendance/
-│   └── attendance.ino          ← Main firmware code (ESP-IDF C)
-├── main/
-│   └── CMakeLists.txt          ← Component configuration
-├── CMakeLists.txt              ← Project configuration
-├── sdkconfig.defaults          ← Default ESP-IDF settings
-├── build.bat                   ← Windows build script
-├── build.sh                    ← Linux/Mac build script
-├── ESP_IDF_BUILD_GUIDE.md      ← Detailed build instructions
-├── CONVERSION_NOTES.md         ← Arduino → ESP-IDF changes
-└── README.md                   ← This file
+│   └── attendance.ino          ← Main firmware code (Arduino C++)
+├── CMakeLists.txt              ← ESP-IDF build files (can be removed)
+├── main/CMakeLists.txt         ← ESP-IDF build files (can be removed)
+├── sdkconfig.defaults          ← ESP-IDF build files (can be removed)
+├── build.bat                   ← ESP-IDF build script (can be removed)
+├── build.sh                    ← ESP-IDF build script (can be removed)
+├── README.md                   ← This file
+├── ESP_IDF_BUILD_GUIDE.md      ← ESP-IDF guide (can be removed)
+└── CONVERSION_NOTES.md         ← Technical notes (can be removed)
 ```
 
 ---
 
 ## Configuration
 
-Edit `attendance/attendance.ino` to configure:
+Edit **`attendance/attendance.ino`** to customize:
 
-```c
-#define EXAMPLE_SSID "YourSSID"
-#define EXAMPLE_PASS "YourPassword"
-#define BACKEND_URL "http://192.168.1.100:3000/api/attendance"
-#define DEVICE_LOCATION "Lab 1"
-#define BLUETOOTH_DEVICE_NAME "ESP32_Attendance"
+```cpp
+const char* ssid = "YourNetwork";
+const char* password = "YourPassword";
+const char* backendUrl = "http://192.168.1.100:3000/api/attendance";
+const char* bluetoothName = "ESP32_Attendance";
 ```
 
-After editing, rebuild:
+After editing, rebuild and flash:
 
 ```bash
-idf.py build
-idf.py -p COM3 flash  # Windows: COM3, COM4, etc.
-idf.py -p /dev/ttyUSB0 flash  # Linux: /dev/ttyUSB0, /dev/ttyUSB1, etc.
+pio run -t upload
 ```
 
 ---
 
-## Key Differences from Arduino
+## Serial Monitor Output
 
-| Feature            | Arduino               | ESP-IDF               |
-| ------------------ | --------------------- | --------------------- |
-| **Entry point**    | `setup()` / `loop()`  | `app_main()`          |
-| **Threading**      | Single-threaded       | FreeRTOS tasks        |
-| **Build system**   | PlatformIO            | CMake                 |
-| **Debugging**      | Limited               | Full GDB support      |
-| **Memory control** | Automatic             | Fine-grained          |
-| **Bluetooth**      | BluetoothSerial class | SPP callbacks + queue |
+### Expected Startup Output
 
-See [CONVERSION_NOTES.md](CONVERSION_NOTES.md) for detailed comparison.
+```
+========================================
+ESP32/ESP32-S3 Attendance Logger
+Built with Arduino C++
+========================================
+Initializing WiFi...
+Connecting to YourNetwork...........
+WiFi connected with IP: 192.168.1.150
+Initializing Bluetooth...
+Bluetooth initialized
+Bluetooth device name: ESP32_Attendance
+Bluetooth PIN: 1234
+Firmware initialization complete
+Waiting for Bluetooth connections and WiFi messages...
+```
+
+### When Barcode Received
+
+```
+[BT] Received barcode: CCT/00001/023
+[HTTP] POST success: code 200
+[HTTP] Response: {"id":42,"timestamp":"2026-03-30T14:35:42.123Z"}
+```
+
+### If Error Occurs
+
+```
+[HTTP] POST failed: connection refused
+```
 
 ---
 
-## Troubleshooting
+## Memory Usage
 
-### Build fails: "CMake not found"
-
-```bash
-python -m pip install cmake
+```
+Partition layout:
+  Factory app    0x1000      ~1.5 MB
+  OTA data       0xd000      0x2000
+  NVRAM (NVS)    0xf000      12 KB
+  PHY_INIT       0x11000     4 KB
 ```
 
-### Serial monitor shows garbage
+**Runtime RAM:**
 
-- Ensure baud rate is **115200**
-- Check `menuconfig` → Serial flasher config
-
-### Device not found during flash
-
-```bash
-# List available ports:
-# Windows:
-python -m serial.tools.list_ports
-
-# Linux/Mac:
-ls /dev/tty*
-```
-
-### Bluetooth not initializing
-
-1. Run: `idf.py menuconfig`
-2. Go to: `Component config → Bluetooth → Enable Bluetooth`
-3. Rebuild: `idf.py build`
-
-### WiFi won't connect
-
-- Verify SSID and password in code
-- Check SSID is 2.4 GHz (not 5 GHz)
-- Inspect Serial Monitor for WiFi event messages
+- Arduino framework: ~50 KB
+- Bluetooth stack: ~80 KB
+- WiFi stack: ~150 KB
+- Application: ~10 KB
+- **Total: ~290 KB** (57% of 512 KB available)
 
 ---
 
-## Build & Flash Commands
+## Power Consumption
 
-### Quick Commands (using scripts)
+| State             | Current    |
+| ----------------- | ---------- |
+| Deep Sleep        | 10 μA      |
+| Idle              | 70-100 mA  |
+| Bluetooth receive | 100-150 mA |
+| HTTP POST         | 200-300 mA |
+| Peak              | ~400 mA    |
 
-**Windows (PowerShell):**
+**Recommended power supply:** 5V, 1A minimum (USB is sufficient)
 
-```batch
-.\build.bat esp32            # Set target and build
-.\build.bat flash            # Flash to device
-.\build.bat monitor          # View serial output
-.\build.bat menu             # Configuration
-.\build.bat clean            # Clean builds
-.\build.bat fullclean        # Reset everything
+---
+
+## Development & Debugging
+
+### Enable Debug Logging
+
+The firmware already includes detailed logging. To see more:
+
+**Arduino IDE:** Tools → Serial Monitor (115200 baud)
+
+**PlatformIO:**
+
+```bash
+pio device monitor --baud 115200
 ```
 
-**Linux/Mac (Bash):**
+### Troubleshooting
+
+| Problem              | Solution                                   |
+| -------------------- | ------------------------------------------ |
+| `Board not found`    | Check COM port in Arduino IDE              |
+| Serial shows garbage | Verify baud rate is 115200                 |
+| Bluetooth not found  | Ensure Bluetooth is enabled on phone       |
+| WiFi auth fails      | Verify SSID/password in code               |
+| HTTP fails           | Check backend URL and network connectivity |
+
+---
+
+## Build Commands
+
+### PlatformIO (Recommended)
+
+| Command              | Purpose                   |
+| -------------------- | ------------------------- |
+| `pio run`            | Build the project         |
+| `pio run -t upload`  | Build and flash to device |
+| `pio device monitor` | View serial output        |
+| `pio run -t clean`   | Clean build artifacts     |
+| `pio run -t size`    | Show binary size info     |
+
+### Arduino IDE
+
+- **Build:** Sketch → Verify/Compile
+- **Upload:** Sketch → Upload
+- **Monitor:** Tools → Serial Monitor
+
+---
+
+## Selecting Between ESP32 & ESP32-S3
+
+The code is **100% compatible** with both chips. Simply:
+
+1. Select the correct board in Arduino IDE or PlatformIO
+2. Flash as normal
+
+No code changes needed!
+
+## Performance (ESP32 vs ESP32-S3)
+
+| Feature     | ESP32         | ESP32-S3      |
+| ----------- | ------------- | ------------- |
+| Cores       | 2             | 2             |
+| Clock Speed | 240 MHz       | 240 MHz       |
+| RAM         | 520 KB        | 512 KB        |
+| Flash       | 4-16 MB       | 4-16 MB       |
+| Bluetooth   | Classic + BLE | Classic + BLE |
+| WiFi        | 802.11 b/g/n  | 802.11 b/g/n  |
+| USB         | Via FTDI      | Built-in      |
+| Cost        | $6-10         | $8-12         |
+
+For this project, both perform identically. ESP32-S3 has slight advantages in USB connectivity.
+
+---
+
+## Related Documentation
+
+- [**PHONE_SETUP_GUIDE.md**](../Documentation/PHONE_SETUP_GUIDE.md) - Phone app setup
+- [**API_REFERENCE.md**](../Documentation/API_REFERENCE.md) - Backend API
+- [**HARDWARE_CONFIGURATION.md**](../Documentation/HARDWARE_CONFIGURATION.md) - Hardware specs
+
+---
+
+## Support
+
+For Arduino ESP32 documentation: https://docs.espressif.com/projects/arduino-esp32/
+
+For hardware info:
+
+- [ESP32 Datasheet](https://www.espressif.com/products/socs/esp32/resources/)
+- [ESP32-S3 Datasheet](https://www.espressif.com/products/socs/esp32-s3/resources/)
+
+---
+
+**Last Updated:** March 30, 2026  
+**Converted back to Arduino C++**
 
 ```bash
 ./build.sh esp32             # Set target and build
