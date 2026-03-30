@@ -1,8 +1,9 @@
+// These first line of code, what and why are they?
 const express = require('express');
 const router = express.Router();
 const db = require('../data');
 
-// get all students
+// get all students [Okay!]
 router.get('/', (req, res) => {
   db.all('SELECT * FROM Students', [], (err, rows) => {
     if (err) return res.status(500).json({ error: err.message });
@@ -11,6 +12,7 @@ router.get('/', (req, res) => {
 });
 
 // get one student by student_id (for "Info" UI)
+// These must be understood
 router.get('/:student_id', (req, res) => {
   const studentId = req.params.student_id;
   const sql = `
@@ -25,13 +27,14 @@ router.get('/:student_id', (req, res) => {
     WHERE s.student_id = ?
     LIMIT 1
   `;
-  db.get(sql, [studentId], (err, row) => {
+  db.get(sql, [studentId], (err, row) => { // Again, these codes are neat to know
     if (err) return res.status(500).json({ error: err.message });
     if (!row) return res.status(404).json({ error: 'student_not_found' });
     res.json(row);
   });
 });
 
+// These module also looks important
 // add a student (lec mode)
 router.post('/', (req, res) => {
   const { student_id, name, course_id } = req.body;

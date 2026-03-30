@@ -2,16 +2,16 @@
 
 // lecturer mode placeholder
 document.getElementById('lec_mode').onclick = function() {
-    alert('Lecturer mode is not yet available in MVP.');
+    alert('Lecturer mode is still in development.');
 };
 
 // load attendance when page is ready
 window.addEventListener('DOMContentLoaded', () => {
     loadAttendance();
     // light auto-refresh for demo (every 10s)
-    setInterval(loadAttendance, 10000);
+    setInterval(loadAttendance, 10000);         // What is this?
 });
-
+        // This code block...
 function loadAttendance() {
     fetch('/api/attendance')
         .then(resp => resp.json())
@@ -21,7 +21,7 @@ function loadAttendance() {
         })
         .catch(err => console.error('Failed to load attendance', err));
 }
-
+            // Will R: these blocks
 function populateTable(records) {
     const tbody = document.getElementById('attendance-body');
     tbody.innerHTML = '';
@@ -56,6 +56,6 @@ document.body.addEventListener('click', e => {
                 const course = s.course_name ? `\nCourse: ${s.course_name}` : '';
                 alert(`Student ID: ${s.student_id}\nName: ${s.name}${course}`);
             })
-            .catch(() => alert('Student details not found for ' + id));
+            .catch(() => alert('Error: Student details not found for ' + id));
     }
 });

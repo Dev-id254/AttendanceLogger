@@ -1,3 +1,5 @@
+// CareFull with this file. It is important to understand it
+
 // Simple SQLite helper for MVP. Data persisted in a file `attendance.db` in the Backend folder.
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
@@ -5,7 +7,7 @@ const path = require('path');
 const dbFile = path.join(__dirname, 'attendance.db');
 const db = new sqlite3.Database(dbFile);
 
-// initialize schema if not exists
+// initialize schema IF !exists
 const initSql = `
 PRAGMA foreign_keys = ON;
 
@@ -67,15 +69,15 @@ db.serialize(() => {
     );
     db.run(
       'INSERT OR IGNORE INTO Students (student_id, name, course_id) VALUES (?,?,?)',
-      ['S1001', 'John Doe', 1]
+      ['CCT/00001/023', 'John Champion', 312]
     );
     db.run(
       'INSERT OR IGNORE INTO Students (student_id, name, course_id) VALUES (?,?,?)',
-      ['S1002', 'Jane Smith', 1]
+      ['CCT/00002/023', 'Jane Smitherins', 308]
     );
     db.run(
       'INSERT OR IGNORE INTO Devices (id, esp32_mac, location) VALUES (?,?,?)',
-      [1, 'AA:BB:CC:DD:EE:FF', 'Lab 1']
+      [1, 'AA:BB:CC:DD:EE:FF', 'TB2']
     );
   });
 });

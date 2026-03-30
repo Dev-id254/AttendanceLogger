@@ -1,5 +1,6 @@
 -- MySQL schema for Smart Attendance System (MVP & future expansion)
 -- run in MySQL workbench or via CLI
+-- study this db and try to run it too in the sql CLI
 
 CREATE DATABASE IF NOT EXISTS attendance_system DEFAULT CHARACTER SET utf8mb4;
 USE attendance_system;
