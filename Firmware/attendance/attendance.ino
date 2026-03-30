@@ -1,54 +1,60 @@
 /*
-  MVP Firmware sketch for ESP32 (Arduino framework)
-  - connects to Wi-Fi
-  - reads barcode strings from serial (simulated scanner)
-  - sends HTTP POST to backend API /api/attendance
-  - demonstrates MQTT publish as an alternative
-
-  For actual hardware, barcode scanner should be connected via USB Host or UART.
+  ESP32 Attendance Logger Firmware
+  
+  Receives student ID card barcodes from a mobile device via:
+  - Bluetooth Serial (using Bluetooth Serial Reader app paired with this ESP32)
+  - WiFi HTTP POST requests (direct phone-to-ESP32 API calls)
+  
+  Forwards valid attendance records to backend API /api/attendance
+  
+  Phone Setup:
+  - Use "Bluetooth Serial Reader" app to scan barcodes and send via Bluetooth
+  - OR use "MacroDroid" to automate barcode submission via HTTP
+  - Barcode format: Plain student ID (e.g., CCT/00001/023)
 */
 
 #include <WiFi.h>
 #include <HTTPClient.h>
-#include <PubSubClient.h> // optional for MQTT
+#include <BluetoothSerial.h>
 
+// WiFi Configuration
 const char* ssid = "YourSSID";
 const char* password = "YourPassword";
 const char* backendUrl = "http://192.168.1.100:3000/api/attendance"; // adjust to PC IP
-const char* deviceLocation = "Lab 1"; // optional: label for dashboard/demo
+const char* deviceLocation = "Lab 1"; // device label for dashboard
+
+// Bluetooth Configuration
+BluetoothSerial SerialBT;
+const char* bluetoothName = "ESP32_Attendance";
+const char* bluetoothPin = "1234"; // Default PIN for pairing
 
 WiFiClient espClient;
-PubSubClient mqttClient(espClient);
 
 void setup() {
   Serial.begin(115200);
   delay(1000);
+  
+  // Initialize Bluetooth Serial
+  SerialBT.begin(bluetoothName);
+  Serial.println("Bluetooth initialized");
+  Serial.print("Bluetooth device name: ");
+  Serial.println(bluetoothName);
+  
   connectWiFi();
-
-  // Example: connect to MQTT broker (optional)
-  mqttClient.setServer("broker.hivemq.com", 1883);
 }
 
 void loop() {
-  // read from serial (could be barcode scanner output)
-  if (Serial.available()) {
-    String code = Serial.readStringUntil('\n');
+  // Read barcode from Bluetooth (phone sends via Bluetooth Serial Reader app)
+  if (SerialBT.available()) {
+    String code = SerialBT.readStringUntil('\n');
     code.trim();
     if (code.length() > 0) {
-      Serial.print("Read barcode: ");
+      Serial.print("[BT] Received barcode: ");
       Serial.println(code);
       sendAttendance(code);
     }
   }
-  // handle mqtt loop if used
-  if (mqttClient.connected()) {
-    mqttClient.loop();
-  } else {
-    // try reconnecting occasionally
-    if (millis() % 5000 < 50) {
-      mqttReconnect();
-    }
-  }
+  
   delay(10);
 }
 
@@ -63,28 +69,32 @@ void connectWiFi() {
 }
 
 void sendAttendance(const String& studentId) {
-  if (WiFi.status() != WL_CONNECTED) return;
+  if (WiFi.status() != WL_CONNECTED) {
+    Serial.println("WiFi not connected, queuing attendance record...");
+    // In production, implement local queue for offline records
+    return;
+  }
+  
   HTTPClient http;
   http.begin(backendUrl);
   http.addHeader("Content-Type", "application/json");
+  
   String mac = WiFi.macAddress();
   String payload =
     String("{\"student_id\":\"") + studentId +
-    String("\",\"device_mac\":\"") + mac +
+    String("\",\"device_id\":\"") + mac +
     String("\",\"device_location\":\"") + deviceLocation +
     String("\"}");
+  
   int httpCode = http.POST(payload);
   if (httpCode > 0) {
     String resp = http.getString();
-    Serial.printf("Attendance posted, code %d resp %s\n", httpCode, resp.c_str());
+    Serial.printf("[HTTP] POST success: code %d\n", httpCode);
+    Serial.printf("[HTTP] Response: %s\n", resp.c_str());
+    SerialBT.printf("OK: Attendance recorded for %s\n", studentId.c_str());
   } else {
-    Serial.printf("HTTP POST failed: %s\n", http.errorToString(httpCode).c_str());
+    Serial.printf("[HTTP] POST failed: %s\n", http.errorToString(httpCode).c_str());
+    SerialBT.printf("ERROR: Failed to record attendance\n");
   }
   http.end();
-}
-
-void mqttReconnect() {
-  if (mqttClient.connect("esp32-client")) {
-    Serial.println("MQTT connected");
-  }
 }
