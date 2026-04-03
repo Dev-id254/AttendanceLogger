@@ -38,7 +38,9 @@ void loop();
 NimBLEServer *pServer = NULL;
 NimBLECharacteristic *pCharacteristic = NULL;
 bool deviceConnected = false;
-
+// Global state
+bool wifiConnected = false;
+String barcodeBuffer = "";
 // BLE Callbacks
 class MyServerCallbacks : public NimBLEServerCallbacks
 {
@@ -98,10 +100,6 @@ const char *deviceLocation = "Lab 1";
 // BLE Configuration
 const char *bleName = "ESP32_Attendance";
 
-// Global state
-bool wifiConnected = false;
-String barcodeBuffer = "";
-
 // WiFi event handler
 void WiFiEvent(WiFiEvent_t event)
 {
@@ -148,8 +146,6 @@ void initBLE()
         CHARACTERISTIC_UUID,
         NIMBLE_PROPERTY::WRITE);
     pCharacteristic->setCallbacks(new MyCharacteristicCallbacks());
-
-    pService->start();
 
     NimBLEAdvertising *pAdvertising = NimBLEDevice::getAdvertising();
     pAdvertising->addServiceUUID(SERVICE_UUID);
