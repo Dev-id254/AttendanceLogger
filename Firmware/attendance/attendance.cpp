@@ -20,12 +20,17 @@
 #include <Arduino.h>
 #include <WiFi.h>
 #include <HTTPClient.h>
+#include <WebServer.h>
 #include <NimBLEDevice.h>
 
 // Forward declarations
 void WiFiEvent(WiFiEvent_t event);
 void connectWiFi();
 void initBLE();
+void startHttpServer();
+void handlePostAttendance();
+void handleNotFound();
+String parseStudentIdFromJson(const String &body);
 void sendAttendance(const String &studentId);
 void setup();
 void loop();
@@ -41,6 +46,8 @@ bool deviceConnected = false;
 // Global state
 bool wifiConnected = false;
 String barcodeBuffer = "";
+WebServer webServer(80);
+bool httpServerStarted = false;
 // BLE Callbacks
 class MyServerCallbacks : public NimBLEServerCallbacks
 {
@@ -115,6 +122,10 @@ void WiFiEvent(WiFiEvent_t event)
         Serial.print("WiFi connected with IP: ");
         Serial.println(WiFi.localIP());
         wifiConnected = true;
+        if (!httpServerStarted)
+        {
+            startHttpServer();
+        }
         break;
     case SYSTEM_EVENT_STA_DISCONNECTED:
         Serial.println("WiFi disconnected");
@@ -132,6 +143,90 @@ void connectWiFi()
 {
     WiFi.onEvent(WiFiEvent);
     WiFi.begin(ssid, password);
+}
+
+// HTTP server helper functions
+String parseStudentIdFromJson(const String &body)
+{
+    String key = "\"student_id\"";
+    int keyIndex = body.indexOf(key);
+    if (keyIndex < 0)
+    {
+        return "";
+    }
+
+    int colonIndex = body.indexOf(':', keyIndex + key.length());
+    if (colonIndex < 0)
+    {
+        return "";
+    }
+
+    int quoteStart = body.indexOf('"', colonIndex);
+    if (quoteStart < 0)
+    {
+        return "";
+    }
+
+    int quoteEnd = body.indexOf('"', quoteStart + 1);
+    if (quoteEnd < 0)
+    {
+        return "";
+    }
+
+    return body.substring(quoteStart + 1, quoteEnd);
+}
+
+void handlePostAttendance()
+{
+    String body = webServer.arg("plain");
+    String studentId;
+
+    if (body.length() > 0)
+    {
+        if (body.startsWith("{"))
+        {
+            studentId = parseStudentIdFromJson(body);
+        }
+        else
+        {
+            studentId = body;
+        }
+    }
+    else if (webServer.hasArg("student_id"))
+    {
+        studentId = webServer.arg("student_id");
+    }
+
+    studentId.trim();
+    if (studentId.length() == 0)
+    {
+        webServer.send(400, "text/plain", "Missing student_id");
+        Serial.println("[HTTP] POST /attendance missing student_id");
+        return;
+    }
+
+    Serial.printf("[HTTP] Received barcode via WiFi POST: %s\n", studentId.c_str());
+    sendAttendance(studentId);
+    webServer.send(200, "application/json", "{\"status\":\"ok\",\"student_id\":\"" + studentId + "\"}");
+}
+
+void handleNotFound()
+{
+    webServer.send(404, "text/plain", "Not Found");
+}
+
+void startHttpServer()
+{
+    if (httpServerStarted)
+    {
+        return;
+    }
+
+    webServer.on("/attendance", HTTP_POST, handlePostAttendance);
+    webServer.onNotFound(handleNotFound);
+    webServer.begin();
+    httpServerStarted = true;
+    Serial.println("HTTP server started on port 80");
 }
 
 // BLE initialization
@@ -205,6 +300,7 @@ void setup()
     // Initialize WiFi
     Serial.println("Initializing WiFi...");
     connectWiFi();
+    startHttpServer();
 
     // Initialize BLE
     Serial.println("Initializing BLE...");
@@ -218,5 +314,9 @@ void setup()
 void loop()
 {
     // BLE is event-driven, no polling needed
+    if (wifiConnected || httpServerStarted)
+    {
+        webServer.handleClient();
+    }
     delay(10);
 }
